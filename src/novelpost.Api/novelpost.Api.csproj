@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\novelpost.Application\novelpost.Application.csproj" />
     <ProjectReference Include="..\novelpost.Infrastructure\novelpost.Infrastructure.csproj" />
+    <ProjectReference Include="..\novelpost.Contracts\novelpost.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

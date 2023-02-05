@@ -5,18 +5,23 @@ using novelpost.Application.Activities;
 using novelpost.Application.Activities.Commands;
 using novelpost.Application.Activities.Queries;
 using novelpost.Domain.Models;
-using novelpost.Persistence;
 
 namespace novelpost.Api.Controllers;
 
-public class ActivitiesController : BaseApiController
+[ApiController]
+[Route("[controller]")]
+public class ActivitiesController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public ActivitiesController(IMediator mediator) => _mediator = mediator;
+
     [HttpGet]
-    public async Task<IActionResult> GetActivities() => Ok(await Mediator.Send(new GetActivitiesQuery()));
+    public async Task<IActionResult> GetActivities() => Ok(await _mediator.Send(new GetActivitiesQuery()));
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetActivity(Guid id) => Ok(await Mediator.Send(new GetActivityQuery { Id = id }));
+    public async Task<IActionResult> GetActivity(Guid id) => Ok(await _mediator.Send(new GetActivityQuery { Id = id }));
 
     [HttpPost]
-    public async Task<IActionResult> CreateActivity(Activity activity) => Ok(await Mediator.Send(new CreateActivityCommand { Activity = activity }));
+    public async Task<IActionResult> CreateActivity(Activity activity) => Ok(await _mediator.Send(new CreateActivityCommand { Activity = activity }));
 }
