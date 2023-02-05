@@ -1,16 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using novelpost.Application.Services;
+using novelpost.Application.Services.Authentication;
 using novelpost.Contracts.Authentication;
 
 namespace novelpost.Api.Controllers;
 
 [ApiController]
-[Route("auth")]
-public class AuthenticationController : ControllerBase
+[Route("[controller]")]
+public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 
-    public AuthenticationController(IAuthService authService)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
     }
@@ -27,11 +27,11 @@ public class AuthenticationController : ControllerBase
         );
 
         var response = new AuthenticationResponse(
-            authResult.Id,
-            authResult.FirstName,
-            authResult.LastName,
-            authResult.Username,
-            authResult.Email,
+            authResult.User.Id,
+            authResult.User.FirstName,
+            authResult.User.LastName,
+            authResult.User.Username,
+            authResult.User.Email,
             authResult.Token
         );
         return Ok(response);
@@ -46,11 +46,11 @@ public class AuthenticationController : ControllerBase
         );
 
         var response = new AuthenticationResponse(
-            authResult.Id,
-            authResult.FirstName,
-            authResult.LastName,
-            authResult.Username,
-            authResult.Email,
+            authResult.User.Id,
+            authResult.User.FirstName,
+            authResult.User.LastName,
+            authResult.User.Username,
+            authResult.User.Email,
             authResult.Token
         );
         return Ok(response);

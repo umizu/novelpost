@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using novelpost.Application.Activities;
-using novelpost.Application.Services;
+using novelpost.Application.Services.Authentication;
 
 namespace novelpost.Application;
 

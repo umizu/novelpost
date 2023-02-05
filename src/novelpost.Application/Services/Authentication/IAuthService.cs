@@ -1,4 +1,5 @@
-namespace novelpost.Application.Services;
+namespace novelpost.Application.Services.Authentication;
+
 
 public interface IAuthService
 {

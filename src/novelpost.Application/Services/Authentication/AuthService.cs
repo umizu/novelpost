@@ -2,7 +2,8 @@ using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 
-namespace novelpost.Application.Services;
+namespace novelpost.Application.Services.Authentication;
+
 
 public class AuthService : IAuthService
 {
@@ -36,14 +37,10 @@ public class AuthService : IAuthService
         _userRepo.Add(user);
 
         // generate JWT Token
-        var token = _jwtTokenGenerator.GenerateToken(user.Id, firstName, lastName);
+        var token = _jwtTokenGenerator.GenerateToken(user);
 
         return new AuthResult(
-            user.Id,
-            firstName,
-            lastName,
-            username,
-            email,
+            user,
             token);
     }
     public AuthResult Login(string username, string password)
@@ -57,14 +54,10 @@ public class AuthService : IAuthService
             throw new Exception("Password is incorrect");
 
         // generate JWT Token
-        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.FirstName, user.LastName);
+        var token = _jwtTokenGenerator.GenerateToken(user);
 
         return new AuthResult(
-            user.Id,
-            user.FirstName,
-            user.LastName,
-            username,
-            user.Email,
+            user,
             token);
     }
 
