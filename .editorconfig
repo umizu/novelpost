@@ -1,0 +1,5 @@
+# .editorconfig
+root = true
+
+[*.cs]
+dotnet_diagnostic.warning.CA2016.severity = none

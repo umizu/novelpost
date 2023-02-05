@@ -1,4 +1,6 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using novelpost.Application.Activities;
 using novelpost.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddCors(o =>
             .AllowAnyMethod()
             .WithOrigins("http://localhost:3000"));
 });
+
+builder.Services.AddMediatR(typeof(IApplicationMarker));
 
 var app = builder.Build();
 

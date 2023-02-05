@@ -14,30 +14,30 @@ public static class Seed
                     Id = Guid.NewGuid(),
                     Verb = "read",
                     Date = DateTime.Now,
-                    Unit = "Page",
+                    Unit = "page",
                     Start = 1,
                     End = 10,
-                    BookId = "978-3-16-148410-0"
+                    BookId = Guid.NewGuid()
                 },
                 new Activity
                 {
                     Id = Guid.NewGuid(),
                     Verb = "read",
                     Date = DateTime.Now,
-                    Unit = "Page",
+                    Unit = "page",
                     Start = 11,
                     End = 20,
-                    BookId = "978-3-16-148410-0"
+                    BookId = Guid.NewGuid()
                 },
                 new Activity
                 {
                     Id = Guid.NewGuid(),
                     Verb = "read",
                     Date = DateTime.Now,
-                    Unit = "pages",
+                    Unit = "page",
                     Start = 21,
                     End = 30,
-                    BookId = "978-3-16-148410-0"
+                    BookId = Guid.NewGuid()
                 }
             };
 

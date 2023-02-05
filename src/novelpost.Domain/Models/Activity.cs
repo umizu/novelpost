@@ -8,5 +8,5 @@ public class Activity
     public string Unit { get; set; } = default!;
     public int? Start { get; set; }
     public int End { get; set; }
-    public string BookId { get; set; } = default!;
+    public Guid BookId { get; set; }
 }
