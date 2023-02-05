@@ -1,6 +1,6 @@
 namespace novelpost.Application.Services;
 
-public record AuthenticationResult(
+public record AuthResult(
     Guid Id,
     string FirstName,
     string LastName,

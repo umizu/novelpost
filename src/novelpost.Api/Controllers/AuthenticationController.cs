@@ -8,9 +8,9 @@ namespace novelpost.Api.Controllers;
 [Route("auth")]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _authService;
+    private readonly IAuthService _authService;
 
-    public AuthenticationController(IAuthenticationService authService)
+    public AuthenticationController(IAuthService authService)
     {
         _authService = authService;
     }

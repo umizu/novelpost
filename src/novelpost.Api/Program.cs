@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlite(builder.Configuration.GetValue<string>("Database:ConnectionString")));
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddCors(o =>
 {
