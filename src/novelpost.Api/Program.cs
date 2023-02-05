@@ -1,8 +1,6 @@
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using novelpost.Application;
-using novelpost.Application.Activities;
-using novelpost.Application.Services;
+using novelpost.Infrastructure;
 using novelpost.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlite(builder.Configuration.GetValue<string>("Database:ConnectionString")));
 
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 builder.Services.AddCors(o =>
 {
