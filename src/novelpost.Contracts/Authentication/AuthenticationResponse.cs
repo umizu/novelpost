@@ -1,5 +1,9 @@
 namespace novelpost.Contracts.Authentication;
 
 public record AuthenticationResponse(
-    string Token,
-    string RefreshToken);
+    Guid Id,
+    string FirstName,
+    string LastName,
+    string Username,
+    string Email,
+    string Token);

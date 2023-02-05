@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using novelpost.Application;
 using novelpost.Application.Activities;
+using novelpost.Application.Services;
 using novelpost.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlite(builder.Configuration.GetValue<string>("Database:ConnectionString")));
 
+builder.Services.AddApplication();
+
 builder.Services.AddCors(o =>
 {
     o.AddDefaultPolicy(policy =>
@@ -16,9 +20,6 @@ builder.Services.AddCors(o =>
             .AllowAnyMethod()
             .WithOrigins("http://localhost:3000"));
 });
-
-builder.Services.AddMediatR(typeof(IApplicationMarker));
-
 var app = builder.Build();
 
 app.UseCors();
