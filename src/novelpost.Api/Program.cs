@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using novelpost.Api.Middleware;
 using novelpost.Application;
 using novelpost.Infrastructure;
 using novelpost.Persistence;
@@ -19,12 +20,15 @@ builder.Services.AddCors(o =>
             .AllowAnyMethod()
             .WithOrigins("http://localhost:3000"));
 });
+
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
 var app = builder.Build();
 
 app.UseCors();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.MapControllers();
-
 app.MapGet("/", () => "Hello World!");
 
 using var scope = app.Services.CreateScope();

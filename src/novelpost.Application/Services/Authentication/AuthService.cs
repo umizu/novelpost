@@ -4,7 +4,6 @@ using novelpost.Domain.Models;
 
 namespace novelpost.Application.Services.Authentication;
 
-
 public class AuthService : IAuthService
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
@@ -60,5 +59,4 @@ public class AuthService : IAuthService
             user,
             token);
     }
-
 }
