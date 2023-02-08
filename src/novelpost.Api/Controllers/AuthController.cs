@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using novelpost.Application.Services.Authentication;
@@ -6,9 +5,8 @@ using novelpost.Contracts.Authentication;
 
 namespace novelpost.Api.Controllers;
 
-[ApiController]
 [Route("[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : ApiController
 {
     private readonly IAuthService _authService;
 
@@ -20,7 +18,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        ErrorOr<AuthResult> authResult = _authService.Register(
+        var registerResult = _authService.Register(
             request.FirstName,
             request.LastName,
             request.Username,
@@ -28,23 +26,23 @@ public class AuthController : ControllerBase
             request.Password
         );
 
-        return authResult.MatchFirst(
+        return registerResult.Match(
            authResult => Ok(MapAuthResult(authResult)),
-            firstError => Problem(statusCode: 500, title: firstError.Description)
+            error => Problem(error)
         );
     }
 
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = _authService.Login(
+        var loginResult = _authService.Login(
             request.Email,
             request.Password
         );
 
-        return authResult.MatchFirst(
+        return loginResult.Match(
             authResult => Ok(MapAuthResult(authResult)),
-            firstError => Problem(statusCode: 500, title: firstError.Description)
+            errors => Problem(errors)
         );
     }
 

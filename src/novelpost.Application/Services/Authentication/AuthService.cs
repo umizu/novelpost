@@ -1,8 +1,8 @@
-using ErrorOr;
+using novelpost.Application.Common.Errors;
 using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
-using novelpost.Domain.Common.Errors;
 using novelpost.Domain.Models;
+using OneOf;
 
 namespace novelpost.Application.Services.Authentication;
 
@@ -17,12 +17,12 @@ public class AuthService : IAuthService
         _userRepo = userRepo;
     }
 
-    public ErrorOr<AuthResult> Register(string firstName, string lastName, string username, string email, string password)
+    public OneOf<AuthResult, IError> Register(string firstName, string lastName, string username, string email, string password)
     {
         if (_userRepo.GetUserByEmail(email) is not null)
-            return Errors.User.DuplicateEmail;
+            return new DuplicateEmailError();
         if (_userRepo.GetUserByUsername(username) is not null)
-            throw new Exception("Account with this username already exists");
+            return new DuplicateUsernameError();
 
         var user = new User
         {
@@ -41,13 +41,13 @@ public class AuthService : IAuthService
             user,
             token);
     }
-    public ErrorOr<AuthResult> Login(string username, string password)
+    public OneOf<AuthResult, IError> Login(string username, string password)
     {
         if (_userRepo.GetUserByUsername(username) is not User user)
-            return Errors.Auth.InvalidCredentials;
+            return new InvalidCredentialsError();
 
         if (user.Password != password)
-            return Errors.Auth.InvalidCredentials;
+            return new InvalidCredentialsError();
 
         var token = _jwtTokenGenerator.GenerateToken(user);
 
