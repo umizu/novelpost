@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using novelpost.Api.Middleware;
 using novelpost.Application;
 using novelpost.Infrastructure;
 using novelpost.Persistence;
@@ -7,7 +6,6 @@ using novelpost.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
 builder.Services.AddDbContext<DataContext>(o => o.UseSqlite(builder.Configuration.GetValue<string>("Database:ConnectionString")));
 
 builder.Services.AddApplication();
@@ -21,12 +19,10 @@ builder.Services.AddCors(o =>
             .WithOrigins("http://localhost:3000"));
 });
 
-builder.Services.AddScoped<ErrorHandlingMiddleware>();
-
 var app = builder.Build();
 
 app.UseCors();
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseExceptionHandler("/error");
 
 app.MapControllers();
 app.MapGet("/", () => "Hello World!");

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using novelpost.Application.Services.Authentication;
 using novelpost.Contracts.Authentication;
@@ -18,7 +20,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var authResult = _authService.Register(
+        ErrorOr<AuthResult> authResult = _authService.Register(
             request.FirstName,
             request.LastName,
             request.Username,
@@ -26,15 +28,10 @@ public class AuthController : ControllerBase
             request.Password
         );
 
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Username,
-            authResult.User.Email,
-            authResult.Token
+        return authResult.MatchFirst(
+           authResult => Ok(MapAuthResult(authResult)),
+            firstError => Problem(statusCode: 500, title: firstError.Description)
         );
-        return Ok(response);
     }
 
     [HttpPost("login")]
@@ -45,14 +42,20 @@ public class AuthController : ControllerBase
             request.Password
         );
 
-        var response = new AuthenticationResponse(
+        return authResult.MatchFirst(
+            authResult => Ok(MapAuthResult(authResult)),
+            firstError => Problem(statusCode: 500, title: firstError.Description)
+        );
+    }
+
+    private static AuthenticationResponse MapAuthResult(AuthResult authResult)
+    {
+        return new AuthenticationResponse(
             authResult.User.Id,
             authResult.User.FirstName,
             authResult.User.LastName,
             authResult.User.Username,
             authResult.User.Email,
-            authResult.Token
-        );
-        return Ok(response);
+            authResult.Token);
     }
 }
