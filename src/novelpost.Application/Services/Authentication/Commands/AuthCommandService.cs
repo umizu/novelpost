@@ -1,17 +1,18 @@
 using novelpost.Application.Common.Errors;
 using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
+using novelpost.Application.Services.Authentication.Common;
 using novelpost.Domain.Models;
 using OneOf;
 
-namespace novelpost.Application.Services.Authentication;
+namespace novelpost.Application.Services.Authentication.Commands;
 
-public class AuthService : IAuthService
+public class AuthCommandService : IAuthCommandService
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     private readonly IUserRepository _userRepo;
 
-    public AuthService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepo)
+    public AuthCommandService(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepo)
     {
         _jwtTokenGenerator = jwtTokenGenerator;
         _userRepo = userRepo;

@@ -1,6 +1,8 @@
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using novelpost.Application.Services.Authentication;
+using novelpost.Application.Services.Authentication.Commands;
+using novelpost.Application.Services.Authentication.Common;
+using novelpost.Application.Services.Authentication.Queries;
 using novelpost.Contracts.Authentication;
 
 namespace novelpost.Api.Controllers;
@@ -8,17 +10,19 @@ namespace novelpost.Api.Controllers;
 [Route("[controller]")]
 public class AuthController : ApiController
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthQueryService _authQueryService;
+    private readonly IAuthCommandService _authCommandService;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthQueryService authQueryService, IAuthCommandService authCommandService)
     {
-        _authService = authService;
+        _authQueryService = authQueryService;
+        _authCommandService = authCommandService;
     }
 
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var registerResult = _authService.Register(
+        var registerResult = _authCommandService.Register(
             request.FirstName,
             request.LastName,
             request.Username,
@@ -35,7 +39,7 @@ public class AuthController : ApiController
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var loginResult = _authService.Login(
+        var loginResult = _authQueryService.Login(
             request.Email,
             request.Password
         );
