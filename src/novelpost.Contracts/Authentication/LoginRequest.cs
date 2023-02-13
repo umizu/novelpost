@@ -1,6 +1,6 @@
 namespace novelpost.Contracts.Authentication;
 
 public record LoginRequest(
-    string Email,
+    string Username,
     string Password
 );

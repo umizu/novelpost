@@ -1,8 +1,8 @@
-using ErrorOr;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using novelpost.Application.Services.Authentication.Commands;
-using novelpost.Application.Services.Authentication.Common;
-using novelpost.Application.Services.Authentication.Queries;
+using novelpost.Application.Authentication.Commands.Register;
+using novelpost.Application.Authentication.Common;
+using novelpost.Application.Authentication.Queries.Login;
 using novelpost.Contracts.Authentication;
 
 namespace novelpost.Api.Controllers;
@@ -10,25 +10,25 @@ namespace novelpost.Api.Controllers;
 [Route("[controller]")]
 public class AuthController : ApiController
 {
-    private readonly IAuthQueryService _authQueryService;
-    private readonly IAuthCommandService _authCommandService;
+    private readonly IMediator _mediator;
 
-    public AuthController(IAuthQueryService authQueryService, IAuthCommandService authCommandService)
+    public AuthController(IMediator mediator)
     {
-        _authQueryService = authQueryService;
-        _authCommandService = authCommandService;
+        _mediator = mediator;
     }
 
     [HttpPost("register")]
-    public IActionResult Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var registerResult = _authCommandService.Register(
+        var command = new RegisterCommand(
             request.FirstName,
             request.LastName,
             request.Username,
             request.Email,
             request.Password
         );
+
+        var registerResult = await _mediator.Send(command);
 
         return registerResult.Match(
            authResult => Ok(MapAuthResult(authResult)),
@@ -37,12 +37,14 @@ public class AuthController : ApiController
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var loginResult = _authQueryService.Login(
-            request.Email,
+        var query = new LoginQuery(
+            request.Username,
             request.Password
         );
+
+        var loginResult = await _mediator.Send(query);
 
         return loginResult.Match(
             authResult => Ok(MapAuthResult(authResult)),
