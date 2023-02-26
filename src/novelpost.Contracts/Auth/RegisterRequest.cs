@@ -1,4 +1,4 @@
-namespace novelpost.Contracts.Authentication;
+namespace novelpost.Contracts.Auth;
 
 public record RegisterRequest(
     string FirstName,

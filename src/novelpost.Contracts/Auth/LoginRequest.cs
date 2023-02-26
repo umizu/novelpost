@@ -1,4 +1,4 @@
-namespace novelpost.Contracts.Authentication;
+namespace novelpost.Contracts.Auth;
 
 public record LoginRequest(
     string Username,

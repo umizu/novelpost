@@ -1,9 +1,10 @@
 using System.Net;
+using novelpost.Application.Errors.Common;
 
-namespace novelpost.Application.Common.Errors;
+namespace novelpost.Application.Errors.Auth;
 
 public record struct InvalidCredentialsError : IError
 {
     public HttpStatusCode StatusCode => HttpStatusCode.Unauthorized;
-    public string ErrorMessage => "Invalid credentials.";
+    public string Title => "Invalid credentials";
 }

@@ -1,10 +1,11 @@
 using MediatR;
-using novelpost.Application.Common.Errors;
 using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 using OneOf;
 using novelpost.Application.Authentication.Common;
+using novelpost.Application.Errors.Common;
+using novelpost.Application.Errors.Auth;
 
 namespace novelpost.Application.Authentication.Queries.Login;
 
@@ -21,6 +22,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<AuthResult, I
 
     public async Task<OneOf<AuthResult, IError>> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
+
         if (_userRepo.GetUserByUsername(query.Username) is not User user)
             return new InvalidCredentialsError();
 

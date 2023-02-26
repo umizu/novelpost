@@ -1,9 +1,10 @@
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using novelpost.Application.Authentication.Commands.Register;
 using novelpost.Application.Authentication.Common;
 using novelpost.Application.Authentication.Queries.Login;
-using novelpost.Contracts.Authentication;
+using novelpost.Contracts.Auth;
 
 namespace novelpost.Api.Controllers;
 
@@ -11,27 +12,23 @@ namespace novelpost.Api.Controllers;
 public class AuthController : ApiController
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public AuthController(IMediator mediator)
+    public AuthController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var command = new RegisterCommand(
-            request.FirstName,
-            request.LastName,
-            request.Username,
-            request.Email,
-            request.Password
-        );
+        var command = _mapper.Map<RegisterCommand>(request);
 
         var registerResult = await _mediator.Send(command);
 
         return registerResult.Match(
-           authResult => Ok(MapAuthResult(authResult)),
+           authResult => Ok(_mapper.Map<AuthResponse>(authResult)),
             error => Problem(error)
         );
     }
@@ -39,27 +36,13 @@ public class AuthController : ApiController
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = new LoginQuery(
-            request.Username,
-            request.Password
-        );
+        var query = _mapper.Map<LoginQuery>(request);
 
         var loginResult = await _mediator.Send(query);
 
         return loginResult.Match(
-            authResult => Ok(MapAuthResult(authResult)),
+            authResult => Ok(_mapper.Map<AuthResponse>(authResult)),
             errors => Problem(errors)
         );
-    }
-
-    private static AuthenticationResponse MapAuthResult(AuthResult authResult)
-    {
-        return new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.FirstName,
-            authResult.User.LastName,
-            authResult.User.Username,
-            authResult.User.Email,
-            authResult.Token);
     }
 }

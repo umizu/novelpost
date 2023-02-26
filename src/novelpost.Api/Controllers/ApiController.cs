@@ -1,6 +1,6 @@
-using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using novelpost.Application.Common.Errors;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using novelpost.Application.Errors.Common;
 
 namespace novelpost.Api.Controllers;
 
@@ -9,8 +9,25 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(IError error)
     {
-        return Problem(
+        return error switch
+        {
+            IValidationError validationError => MapToValidationProblem(validationError),
+            _ => Problem(statusCode: (int)error.StatusCode, title: error.Title)
+        };
+    }
+
+    private IActionResult MapToValidationProblem(IValidationError error)
+    {
+        var modelStateDictionary = new ModelStateDictionary();
+
+        foreach (var (propertyName, errorMessage) in error.Errors)
+        {
+            modelStateDictionary.AddModelError(propertyName, errorMessage);
+        }
+
+        return ValidationProblem(
             statusCode: (int)error.StatusCode,
-            title: error.ErrorMessage);
+            title: error.Title,
+            modelStateDictionary: modelStateDictionary);
     }
 }

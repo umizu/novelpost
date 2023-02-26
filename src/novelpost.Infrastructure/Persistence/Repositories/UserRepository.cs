@@ -1,7 +1,7 @@
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 
-namespace novelpost.Infrastructure.Persistence;
+namespace novelpost.Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {

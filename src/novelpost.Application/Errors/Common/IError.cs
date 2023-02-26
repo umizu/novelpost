@@ -1,9 +1,9 @@
 using System.Net;
 
-namespace novelpost.Application.Common.Errors;
+namespace novelpost.Application.Errors.Common;
 
 public interface IError
 {
     HttpStatusCode StatusCode { get; }
-    string ErrorMessage { get; }
+    string Title { get; }
 }

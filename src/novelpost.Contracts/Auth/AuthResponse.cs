@@ -1,6 +1,6 @@
-namespace novelpost.Contracts.Authentication;
+namespace novelpost.Contracts.Auth;
 
-public record AuthenticationResponse(
+public record AuthResponse(
     Guid Id,
     string FirstName,
     string LastName,

@@ -1,10 +1,11 @@
 using MediatR;
-using novelpost.Application.Common.Errors;
 using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 using OneOf;
 using novelpost.Application.Authentication.Common;
+using novelpost.Application.Errors.Common;
+using novelpost.Application.Errors.Auth;
 
 namespace novelpost.Application.Authentication.Commands.Register;
 
@@ -22,6 +23,8 @@ public class RegisterCommandHandler :
 
     public async Task<OneOf<AuthResult, IError>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
+
         if (_userRepo.GetUserByEmail(command.Email) is not null)
             return new DuplicateEmailError();
         if (_userRepo.GetUserByUsername(command.Username) is not null)

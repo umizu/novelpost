@@ -1,6 +1,6 @@
 using MediatR;
 using novelpost.Application.Authentication.Common;
-using novelpost.Application.Common.Errors;
+using novelpost.Application.Errors.Common;
 using OneOf;
 
 namespace novelpost.Application.Authentication.Commands.Register;
