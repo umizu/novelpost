@@ -6,15 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddPresentation()
-    .AddApplication()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddApplication();
 
 var app = builder.Build();
 
 app.UseExceptionHandler("/error");
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => "Hello World!");
 
 // using var scope = app.Services.CreateScope();
 // var services = scope.ServiceProvider;

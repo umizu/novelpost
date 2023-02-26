@@ -1,14 +1,15 @@
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using novelpost.Application.Authentication.Commands.Register;
-using novelpost.Application.Authentication.Common;
 using novelpost.Application.Authentication.Queries.Login;
 using novelpost.Contracts.Auth;
 
 namespace novelpost.Api.Controllers;
 
 [Route("[controller]")]
+[AllowAnonymous]
 public class AuthController : ApiController
 {
     private readonly IMediator _mediator;
