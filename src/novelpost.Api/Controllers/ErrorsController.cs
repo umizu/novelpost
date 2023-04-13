@@ -18,7 +18,7 @@ public class ErrorsController : ControllerBase
         Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
 
         if (exception != null)
-            _logger.LogError(exception, exception.Message);
+            _logger.LogError(exception, "{Message}", exception.Message);
 
         return Problem(statusCode: 500);
     }

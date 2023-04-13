@@ -1,6 +1,6 @@
 using novelpost.Domain.Models;
 
-namespace novelpost.Application.Authentication.Common;
+namespace novelpost.Application.Features.Authentication.Common;
 
 public record AuthResult(
     User User,

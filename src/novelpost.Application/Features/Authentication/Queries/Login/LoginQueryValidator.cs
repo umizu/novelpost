@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace novelpost.Application.Authentication.Queries.Login;
+namespace novelpost.Application.Features.Authentication.Queries.Login;
 
 public class LoginQueryValidator : AbstractValidator<LoginQuery>
 {

@@ -1,9 +1,9 @@
 using MediatR;
-using novelpost.Application.Authentication.Common;
+using novelpost.Application.Features.Authentication.Common;
 using novelpost.Application.Errors.Common;
 using OneOf;
 
-namespace novelpost.Application.Authentication.Queries.Login;
+namespace novelpost.Application.Features.Authentication.Queries.Login;
 
 public record LoginQuery(
     string Username,

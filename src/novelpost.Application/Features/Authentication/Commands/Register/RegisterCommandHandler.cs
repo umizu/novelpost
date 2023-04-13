@@ -3,11 +3,11 @@ using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 using OneOf;
-using novelpost.Application.Authentication.Common;
 using novelpost.Application.Errors.Common;
 using novelpost.Application.Errors.Auth;
+using novelpost.Application.Features.Authentication.Common;
 
-namespace novelpost.Application.Authentication.Commands.Register;
+namespace novelpost.Application.Features.Authentication.Commands.Register;
 
 public class RegisterCommandHandler :
     IRequestHandler<RegisterCommand, OneOf<AuthResult, IError>>

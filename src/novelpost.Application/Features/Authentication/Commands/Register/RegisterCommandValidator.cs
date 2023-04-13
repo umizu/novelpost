@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace novelpost.Application.Authentication.Commands.Register;
+namespace novelpost.Application.Features.Authentication.Commands.Register;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {

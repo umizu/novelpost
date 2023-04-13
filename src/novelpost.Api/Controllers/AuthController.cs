@@ -2,8 +2,8 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using novelpost.Application.Authentication.Commands.Register;
-using novelpost.Application.Authentication.Queries.Login;
+using novelpost.Application.Features.Authentication.Commands.Register;
+using novelpost.Application.Features.Authentication.Queries.Login;
 using novelpost.Contracts.Auth;
 
 namespace novelpost.Api.Controllers;

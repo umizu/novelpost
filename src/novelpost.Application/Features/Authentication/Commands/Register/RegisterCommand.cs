@@ -1,9 +1,9 @@
 using MediatR;
-using novelpost.Application.Authentication.Common;
 using novelpost.Application.Errors.Common;
+using novelpost.Application.Features.Authentication.Common;
 using OneOf;
 
-namespace novelpost.Application.Authentication.Commands.Register;
+namespace novelpost.Application.Features.Authentication.Commands.Register;
 
 public record RegisterCommand(
     string FirstName,
