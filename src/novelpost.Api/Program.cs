@@ -1,19 +1,18 @@
 using novelpost.Api;
 using novelpost.Application;
 using novelpost.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddPresentation()
-    .AddInfrastructure(builder.Configuration)
-    .AddApplication();
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration, builder.Host);
 
 var app = builder.Build();
 
 app.UseExceptionHandler("/error");
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapControllers();
 
 // using var scope = app.Services.CreateScope();

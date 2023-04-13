@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using novelpost.Application.Common.Interfaces.Authentication;
@@ -10,20 +11,22 @@ using novelpost.Application.Common.Interfaces.Services;
 using novelpost.Infrastructure.Authentication;
 using novelpost.Infrastructure.Persistence.Repositories;
 using novelpost.Infrastructure.Services;
+using Serilog;
 
 namespace novelpost.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration, IHostBuilder host)
     {
+        host.UseSerilog((ctx, cfg) => cfg.ReadFrom.Configuration(ctx.Configuration));
+
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddAuth(configuration);
 
-        // services.AddDbContext<DataContext>(o => o.UseSqlite(configuration.GetValue<string>("Database:ConnectionString")));
         return services;
     }
 
