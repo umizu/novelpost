@@ -4,7 +4,7 @@ namespace novelpost.Application.Common.Interfaces.Persistence;
 
 public interface IUserRepository
 {
-    User? GetUserByEmail(string email);
-    User? GetUserByUsername(string username);
-    void Add(User user);
+    Task<User?> GetUserByEmailAsync(string email);
+    Task<User?> GetUserByUsernameAsync(string username);
+    Task AddAsync(User user);
 }

@@ -6,4 +6,5 @@ public record AuthResponse(
     string LastName,
     string Username,
     string Email,
-    string Token);
+    string AccessToken,
+    string RefreshToken);

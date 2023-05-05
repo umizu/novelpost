@@ -1,14 +1,16 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using novelpost.Application.Common.Interfaces.Authentication;
+using novelpost.Application.Common.Interfaces.Auth;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Application.Common.Interfaces.Services;
 using novelpost.Infrastructure.Authentication;
+using novelpost.Infrastructure.Persistence.Common;
 using novelpost.Infrastructure.Persistence.Repositories;
 using novelpost.Infrastructure.Services;
 using Serilog;
@@ -23,6 +25,9 @@ public static class DependencyInjection
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+        services.AddDbContext<IDataContext, DataContext>(options => options.UseNpgsql(configuration["Database:ConnectionString"]));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddAuth(configuration);
@@ -36,7 +41,7 @@ public static class DependencyInjection
         configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
         services.AddSingleton(Options.Create(jwtSettings));
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<ITokenService, TokenService>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opts =>

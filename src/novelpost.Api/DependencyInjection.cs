@@ -8,6 +8,7 @@ public static class DependencyInjection
     {
         services.AddMappings();
         services.AddControllers();
+        services.AddHttpContextAccessor();
         return services;
     }
 }

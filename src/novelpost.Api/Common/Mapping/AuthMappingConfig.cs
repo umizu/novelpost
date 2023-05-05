@@ -17,7 +17,8 @@ public class MappingConfig : IRegister
                 src.User.LastName,
                 src.User.Username,
                 src.User.Email,
-                src.Token));
+                src.AccessToken,
+                src.RefreshToken));
 
         config.NewConfig<RegisterRequest, RegisterCommand>()
             .MapWith(src => new RegisterCommand(

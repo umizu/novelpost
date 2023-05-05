@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 
@@ -5,19 +6,25 @@ namespace novelpost.Infrastructure.Persistence.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private static readonly List<User> _users = new();
-    public void Add(User user)
+    private readonly IDataContext _ctx;
+
+    public UserRepository(IDataContext ctx)
     {
-        _users.Add(user);
+        _ctx = ctx;
     }
 
-    public User? GetUserByEmail(string email)
+    public async Task AddAsync(User user)
     {
-        return _users.Find(u => u.Email == email);
+        await _ctx.Users.AddAsync(user);
     }
 
-    public User? GetUserByUsername(string username)
+    public async Task<User?> GetUserByEmailAsync(string email)
     {
-        return _users.Find(u => u.Username == username);
+        return await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public Task<User?> GetUserByUsernameAsync(string username)
+    {
+        return _ctx.Users.FirstOrDefaultAsync(u => u.Username == username);
     }
 }

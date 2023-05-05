@@ -1,7 +1,6 @@
 using novelpost.Api;
 using novelpost.Application;
 using novelpost.Infrastructure;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +15,7 @@ app.UseExceptionHandler("/error");
 app.MapControllers();
 
 // using var scope = app.Services.CreateScope();
-// var services = scope.ServiceProvider;
-// var context = services.GetRequiredService<DataContext>();
+// var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 // await Seed.SeedData(context);
 
 app.Run();

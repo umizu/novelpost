@@ -1,37 +1,39 @@
 using MediatR;
-using novelpost.Application.Common.Interfaces.Authentication;
 using novelpost.Application.Common.Interfaces.Persistence;
 using novelpost.Domain.Models;
 using OneOf;
 using novelpost.Application.Errors.Common;
 using novelpost.Application.Errors.Auth;
 using novelpost.Application.Features.Authentication.Common;
+using novelpost.Application.Common.Interfaces.Auth;
 
 namespace novelpost.Application.Features.Authentication.Commands.Register;
 
 public class RegisterCommandHandler :
     IRequestHandler<RegisterCommand, OneOf<AuthResult, IError>>
 {
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    private readonly ITokenService _tokenService;
     private readonly IUserRepository _userRepo;
+    private readonly IUnitOfWork _uow;
 
-    public RegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepo)
+    public RegisterCommandHandler(ITokenService tokenService, IUserRepository userRepo, IUnitOfWork uow)
     {
-        _jwtTokenGenerator = jwtTokenGenerator;
+        _tokenService = tokenService;
         _userRepo = userRepo;
+        _uow = uow;
     }
 
     public async Task<OneOf<AuthResult, IError>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        await Task.CompletedTask;
-
-        if (_userRepo.GetUserByEmail(command.Email) is not null)
+        if (await _userRepo.GetUserByEmailAsync(command.Email) is not null)
             return new DuplicateEmailError();
-        if (_userRepo.GetUserByUsername(command.Username) is not null)
+        if (await _userRepo.GetUserByUsernameAsync(command.Username) is not null)
             return new DuplicateUsernameError();
 
+        var id = Guid.NewGuid();
         var user = new User
         {
+            Id = id,
             FirstName = command.FirstName,
             LastName = command.LastName,
             Username = command.Username,
@@ -39,12 +41,16 @@ public class RegisterCommandHandler :
             Password = command.Password
         };
 
-        _userRepo.Add(user);
+        await _userRepo.AddAsync(user);
 
-        var token = _jwtTokenGenerator.GenerateToken(user);
+        var accessToken = _tokenService.GenerateAccessToken(user);
+        var refreshToken = _tokenService.GenerateAndSetRefreshToken();
+
+        await _uow.SaveChangesAsync(cancellationToken);
 
         return new AuthResult(
             user,
-            token);
+            accessToken,
+            refreshToken.Token);
     }
 }

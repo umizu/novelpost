@@ -1,11 +1,14 @@
-// using Microsoft.EntityFrameworkCore;
-// using novelpost.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using novelpost.Application.Common.Interfaces.Persistence;
+using novelpost.Domain.Identity;
+using novelpost.Domain.Models;
 
-// namespace novelpost.Infrastructure.Persistence.Common;
+namespace novelpost.Infrastructure.Persistence.Common;
 
-// public class DataContext : DbContext
-// {
-//     public DataContext(DbContextOptions options) : base(options) { }
+public class DataContext : DbContext, IDataContext
+{
+    public DataContext(DbContextOptions options) : base(options) { }
 
-//     public DbSet<Activity> Activities => Set<Activity>();
-// }
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<RefreshToken> RefreshTokens { get; set;} = null!;
+}
